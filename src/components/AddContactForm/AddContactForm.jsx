@@ -1,9 +1,8 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { Formik, Field, } from 'formik';
-import { nanoid } from "nanoid";
 import { StyledButton, StyledError, StyledField, StyledForm, StyledLabel } from './AddContactForm.styled';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
 
 
 
@@ -14,7 +13,7 @@ const validation = Yup.object().shape({
 
 export const AddContactForm = () => {
     const dispatch = useDispatch()
-    
+    const contacts = useSelector(state => state.contacts.contacts)
     return (
         <>
             <h2>Phonebook</h2>
@@ -26,9 +25,16 @@ export const AddContactForm = () => {
             validationSchema={validation}
             onSubmit = {
                 (values, actions) => {
+                    for (const contact of contacts){
+                        if (values.name === contact.name){
+                            alert(`${values.name} is already in your contacts`)
+                        return
+                        }
+                        
+                    }
                     dispatch(
                         addContact(
-                        {...values, id: nanoid()}
+                        {...values}
                     ))
                     actions.resetForm();
                 }
