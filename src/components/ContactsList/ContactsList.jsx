@@ -19,7 +19,7 @@ export const ContactsList = () => {
                         <div>
                         <StyledDeleteButton
                          type="button" onClick={() => dispatch(
-                            removeContact(contact.id)
+                            removeContact(contact)
                             )}>Delete</StyledDeleteButton> 
                         </div>
                         
